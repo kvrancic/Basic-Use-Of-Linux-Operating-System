@@ -1,0 +1,377 @@
+ljuska -> aplikacija koja prihvaca korisnicke naredbe i izvrsava ih 
+terminal -> "uredaj" koji prima i vraca naredbe 
+
+NAPOMENE:
+* ne postoje diskovi -> sve krece od root foldera 
+* staze: kratko ./nestonesto (pise najcesce kao nestonesto bez ./), dugo /home/nestonesto 
+* u Linuxu ekstenzije zapravo ne znače ništa
+* 0 stdin, 1 stdout, 2 stderr
+* mozemo uvjeto izvrsavati naredbe sa || i && 
+
+NAREDBE: <naredba><opcije><argumenti>
+duge opcije: -- (npr. --recursive)
+kratke opcije: - (npr. -R)
+-h daje sustav pomoći 
+
+PRIMJERI NAREDBI:
+
+* cd
+~ je oznaka home direktorija (isto sto i $HOME)
+.. roditeljski dir 
+. tekuci dir 
+/../../../ nece nis napravit 
+sve znakove treba odvojiti spaceom od naredbe 
+
+
+* ls(list) = svi datoteka i direktorija, abecedno poredani 
+-l daje vise informacija 
+-h daje u citljivijem formatu (umjesto borja okteta broj megabajta) 
+-a da pokaze i skrivene datoteke
+-d daje podatke o samom direktoriju, ne o sadrzaju unutra
+TAB usred pisanja nudi opcije / autocomplete 
+
+
+* man -> user manual 
+izlazi se na q 
+man -k <ključna riječ> 
+man -f <ime datoteke>
+u manu za pretragu / , ekvivalent ctrl+f
+
+* $PWD 
+radni folder 
+
+* echo 
+efektivno print 
+
+* mkdir 
+radi novi direktorij, dajemo ili punu putanju ili samo ime pa se radi u trenutnom folderu 
+ocekuje da postoji parent direktoriji 
+-p ako zelimo vise ugnijezdenih odjednaput napraviti 
+
+* touch 
+stvara praznu datoteku 
+nad postojecom sva vremena postavlja na isto vrijeme -> zapravo pravi use case toucha 
+
+* ln 
+služi za stvaranje poveznice 
+ln -s /putanja/do/source /putanja/do/LAB1/target
+-s -> simboličke, bez zastavice radi se hard poveznica 
+ln -s nova_datoteka datoteka_link 
+brisanje: rm datoteka_link -> ostaje datoteka, ali ako izbrisemo originalnu datoteku izgubljena poveznica 
+
+Hard poveznica je dodatno ime (referenca) za postojeću datoteku na disku. Kada stvorite hard poveznicu, stvarate novi unos u direktoriju koji pokazuje na isto mjesto na disku gdje se nalaze podaci te datoteke. To znači da ako imate datoteku A i stvorite hard poveznicu koja se zove B, i A i B će se ponašati kao ista datoteka. Ako izbrišete A, B će i dalje postojati i sadržavati podatke jer hard poveznica ne zavisi od izvornog imena datoteke. Međutim, hard poveznice imaju ograničenja; ne možete ih stvoriti za direktorije i ne mogu prelaziti granice različitih diskova ili particija.
+
+Soft poveznica, ili simbolička poveznica, je posebna vrsta datoteke koja služi kao prečac ili pokazatelj na drugu datoteku ili direktorij. Za razliku od hard poveznice, soft poveznica sadrži putanju do ciljne datoteke umjesto da izravno pokazuje na podatke na disku. Ako izbrišete izvornu datoteku na koju soft poveznica pokazuje, soft poveznica će ostati, ali će "pokazivati na ništa" i postat će nevažeća. Soft poveznice mogu prelaziti granice particija i mogu se koristiti i za direktorije.
+
+* cp 
+kopiranje datoteka 
+cp <izvoriste> <odrediste>
+cp<dat1><dat2><dir> kopira 2 datoteke u dirketorij 
+ako zelimo kopirati direktorij moramo dodati -R da se spusti unutra u datoteke 
+da naznacimo da se radi o odredisnom direktoriju a ne datoteci na kraj naziva dodamo /
+
+
+* mv 
+premjestanje i preimenovanje datoteka 
+mv <datoteka> <odredisni folder>
+mv <datoteka/direktorij> <novo-ime> 
+
+* rm 
+brisanje datoteka 
+- r rekurzivno brisanje 
+- f nasilno brisanje 
+
+* rmdir 
+samo za brisnaje praznih direktorija 
+
+* cat 
+ispisi sadrzaj citave datoteke 
+
+* head 
+ispisuje prvih n redaka 
+po defaultu 10 
+head -n 5 ce ispisati pet redaka 
+head -n -5 ce ispisati sve osim zadnjih 5 
+
+* tail 
+ekvivalentno head samo od nazad
+
+* less
+da se otvori bas stranica sa tom datotekom da lijepo strelicama ides gore dolje 
+izlazak na q (kao i man)
+
+* df 
+ispisuje zauzeće po particijama diska -h human readable 
+
+* du 
+pokazuje velicinu jedne datoteke ili direktorija 
+
+* file 
+na temelju sadrzaja pokusava odrediti vrstu 
+
+* >
+preusmjeravanje s stdouta u datoteku 
+napisi u datoteku 
+naredba / > odrediste
+usmjeri rezultat naredbe u odrediste 
+
+* >> 
+append 
+
+* < 
+preusmjeravanje datoteke na standarndi ulaz 
+npr. cat < datoteka ce dat kao input ono sto je u datoteci 
+
+* | 
+spajanje ispisa u jedan i upisa u drugi program
+ona s lijeva se upisuje u ono desno 
+
+* tee 
+preusmjerava stdin na stdout ali i u datoteku 
+ls -l /usr/share | tee lista.txt 
+
+* wc
+word count 
+broj redaka (-l) broj rijeci (-w) broj charactera (-c)
+
+* grep 
+pretrazivanje tekstualnih datoteka 
+grep rijec_koju_trazimo datoteka_u_kojoj_trazimo 
+-i za case insensitive 
+
+* sort 
+sort ime datoteke -> ispisuje sortiranu datoteku 
+ne savea nista 
+
+* uniq 
+uniq [opcije] datoteka 
+trazi da su stvari sortirane 
+-u linije koje se ne ponavljaju 
+-d linije koje se barem jednom ponavljaju 
+-c koliko se sta puta ponavlja
+
+* cut
+prvi dio necega 
+pitaj chatgpt o ovome 
+
+* rev 
+pitaj gpt i o ovome 
+
+* find  / locate (brza verzija, ima neku svoju bazu)
+
+
+
+DATOTEČNI PODSUSTAV:
+* strukturiran kao stablo - postojik korijen 
+* /bin - korisnicki i admin alati 
+* /boot - kernel/jezgra os-a i sve potrebno da se boota 
+* /dev - 
+* /etc - konfiguracijske datoteke
+* na UNIX sustavu -> sve je datoteka 
+* sve je case sensitive - Slova i slova nisu ista 
+* ako zelis datoteku sa spaceom koristi escape character '\' inace ce se napraviti vise datoteka 
+            - alternativno mozes staviti u nazivnike 
+* mtime - zadnja promjena (default ispis ls), atime - access time (ls uz zastavicu -u), ctime - zadnja promjena metadate (ls uz zastavicu -c)
+* stat - ispisuje detaljnije info o datotekama 
+* asterisk je ko na utr-u sve 
+
+
+POVEZNICE 
+* pristup podacima iz različitih datoteka 
+
+
+VARIJABLE 
+* ne moraju se eksplicitno deklarirati (kao python) -> implicitna pretpostavka da je string 
+* lokalne (u lokalnom shellu i funkciji) i globalne (u svim shellovima)
+* nema razmaka niti sa jedne strane znaka jednakosti 
+* varijabla=$(naredba) --> u varijablu pohranjen output naredbe 
+* echo $varijabla --> ispis
+* case sensitive, ne smi bit prvo broj 
+* jedan navodnik -> ispisuje se dolar, dva -> ispisuje se naredba 
+* perzistetno globalne spremiti u ~/.bashrc, ~/.profile ili /etc/environment 
+
+UVJETI 
+* u uglatim zagradama 
+* nužan razmak između zagrada uvjeta [ 1 -eq 1 ]
+* 0 je TRUE, 1 je FALSE - zbog C-ovskog returna u kojem je 0 sve u redu 
+* echo $? ispisuje izlazni status zadnje naredbe 
+* if []; then ... elif [ ] then ... else ... fi 
+    * umjesto ; može samo enter 
+
+PETLJE 
+* while, for, until, select 
+* for ima i c-ovski:
+    for(( i=42; i>=27; i=i-3)) do
+            echo $i
+    done 
+... ali ima i pythonovski 
+for name in $names; do
+    echo $name; 
+done
+
+* while 
+while [ $cnt -le 10 ]; do 
+    echo $cnt; 
+    ((cnt++));
+done 
+
+obrada linija po liniju: 
+while read line; do 
+    echo $line; #ispisi
+    echo $line | rev; #obrni
+done 
+
+* select 
+distros="Ubuntu Arch CentOS Gentoo Quit"
+select distro in $distros; do 
+    if [ $distro == 'Quit' ]; then 
+        break; 
+    fi 
+
+    echo "Tvoja omiljena distribucija je $distro" 
+done 
+echo "Bilo mi je drago"
+
+
+OPERATORI 
+Nad integerima: 
+    -lt, -gt, -le, -ge, -eq, -ne 
+Nad stringovima: 
+    <,>,=,!=,-n(0 ako niz ima duljinu),-z(vraća 0 ako je niz prazan)
+Nad datotekama: 
+    -e(exists),-s(veće od 0),-d(datoteka je direktorij)
+
+
+REGULARNI IZRAZI 
+* \* -> 0 ili proizvoljan broj znakova 
+* logiku vodi ljuska, zapravo naredba koju dobije sustav je sredena naredba 
+* ? odgovara točno jednom znaku 
+* [nešto]* -> počinje na n,e,š,t,o, dalje bilo što 
+* x? ili jednom x ili nijednom 
+* x{n} x točno n puta 
+* x{n,m} između n i m x-eva 
+* ^početak, kraj$
+* | ili 
+* egrep koristimo za regexe 
+* piši regexe u navodnicima!! 
+* regexp oznacavamo tako da ga stavljamo u (), kasnije ga pozivamo sa \x gdje je x redni broj zagrade 
+
+sed 
+* stream editor -> za izmijeniti neke stringove u datoteci 
+* ako nema na kraju slova g mijenja se samo prva pojava u svakom redu 
+* sed -r "s/podizraz_koji_se_mijenja/podizraz_u_koji_mijenja/(g)" imefajla 
+* sedistic = "windows je open source a linux se placa"
+  sed -r "s/(windows)(.*)(linux)/\3\2\1/" sedistic 
+  linux je open source a windows se placa
+
+tldr 
+* skracene man stranice - JEBENI PRIMJERI 
+
+usermod 
+* mijenja podatke o useru 
+
+who, whoami, w, pinky 
+* za informacije o korisniku
+
+useradd i adduser 
+* dodavanje novog korisnika 
+* adduser je interaktivniji, vodi kroz kreaciju 
+
+su 
+* mijenjanje korisnika
+* su ime -> zadrzava svojstva okoline (varijable i sl)
+* su - ime -> stvara novu okolinu svojstvenu korisniku 
+* bez argumenta mijenja korisnika u root 
+
+DOZVOLE 
+-rw-r--r-- 1 pero users 0 Jan 4 23:19 datoteka.txt
+-> prvi znak zanemarujemo (nulti)
+-> prva tri za vlasnika, druga tri za grupu, treće za ostale 
+-> dozvole se prenose s grupe na korisnika
+-> može se pisati u oktalnom zapisu npr. primjer je rw-r--r-- =644 
+
+* chmod
+promjena modea datoteke
+* chmod (-R) <mode> <objekt> 
+* chmod ugo=rwx file1 ---> svim daj read write execute 
+* moze i npr. chmod g+w file1 file2
+* za pretvoriti u .exe:  chmod +x putanja/do/skripte.sh
+* plus dodaje permission, minus mice 
+
+PROGRAM 
+* datoteka koja sadrzi izvrsni kod 
+* naredba je pozivanje programa sa svim argumentima i zastavicama, program je /bin/bash 
+
+PROCES 
+* program koji se izvodi 
+* svaki proces ima PiD 
+* one koji se izvršavaju može se ispisati naredbom ps ("process status") 
+* stanja: R(unning), S(leeping) -> neaktivan manje od 20sek, I(dle) >20sek, T(stopped), Z(zombie)
+* fork() stvara novi proces gotovo identičan roditelju 
+    * povratna vrijednost forka: za dijete 0, za roditelja pid djeteta 
+* roditelj mora čekati dijete sa wait inače dijete postaje zombie 
+* prioritet je određen sa niceness, -20 najviši, +19 najniži 
+
+nice -n {broj}
+* postavljanje nicenessa novog procesa 
+* za manje od 0 treba biti root korisnik 
+
+pgrep 
+* pretraži procese po atributima i ispiši sva matching imena 
+* -v obrće filter 
+
+pstree
+* ispisuje stablo procesa 
+
+htop 
+* ispisuje sve živo o procesima u real timeu, kao task manager performance u windowsu
+* dashboard preko kojeg mogu uređivati praktički sve 
+
+ps 
+* process status, ispisuje trenutne procese u terminalu
+* 3 opcije: UNIX(kratke s jednom crticom), GNU(duge s dvije), BSD(jedno slovo bez crtice)
+* TTY = oznaka terminala, TIME = ukupno vrijme izvrsavanja, CMD = naredba kojom je proces pokrenut 
+* -f dodaje još info 
+* -e ispis svih procesa u sustavu 
+* -o zadavanje formata 
+* --sort po PID ako nije drukčije navedeno 
+* u -> dodaje ispis resursa 
+
+SIGNALI 
+* komunikacija između procesa 
+* funkcija koja prima signal - signal handler
+* signal je zapravo samo broj koji se prosljeđuje programu 
+* svi signali na man 7 signal u linuxu, na macu man 3 signal 
+* sigkill i sigstop ne može biti uhvaćen, blokiran ili ignoriran 
+* ctrl+c = sigint, 
+
+killall 
+* signal se šalje svim procesima pod nekim imenom, ne treba pid 
+
+pkill 
+* šalje po zadanom uzorku 
+
+shebang 
+* ona sekvenca #! putanja/do/ljuske 
+* stavljamo ljusku u funkciju interpretera
+* po defaultu skripte ne možemo izvršiti dok joj ne damo execute bit 
+
+LJUSKA 
+* korisnicko sucelje prema os-u 
+* pokrece i usmjerava ulaze i izlaze
+* mijenjamo ljusku sa chsh 
+* bash: dopusta alias -> nesto cesto koristimo - mozemo dati zamjensko krace ime 
+
+POSAO 
+* stvara se u ljusci kada se pokrene neki proces 
+* ima atribute kao terminal kojem pripada, ulazne i izlazne uredaje, itd 
+* moze objediniti vise medusobno ovisnih procesa 
+* ima vlastiti identifikator - jid -> dodjeljuje ga ljuska 
+* ako želimo proces pokrenuti u pozadini stavljamo & ispred naredbe -> ljuska vraća jid i pid procesa 
+* vraćamo ga naprijed u prednji plan sa "fg" 
+* suspendiramo sa ctrl+z 
+* bez obzira što je u pozadini on daje ispis i ako je tad gotov gotov je 
+
+
+export 
+* pretvaranje varijable u globalnu za child procese 
